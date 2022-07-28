@@ -6,7 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import store from "./store/store";
 import {Provider} from 'react-redux'
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import List from "./components/profiles/List";
+import ProfileList from "./components/profiles/ProfileList";
+import CollectionList from "./components/collections/CollectionList";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,7 +17,8 @@ root.render(
                 <Routes>
 
                     <Route path='/' element={<App/>}>
-                        <Route index element={<List/>}></Route>
+                        <Route index element={<ProfileList/>}></Route>
+                        <Route path="collections/:profileId" element={<CollectionList/>}></Route>
                     </Route>
                 </Routes>
             </BrowserRouter>

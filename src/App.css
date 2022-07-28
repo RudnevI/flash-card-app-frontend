@@ -12,6 +12,10 @@
     width: 60%;
     padding: 1rem;
     background-color: white;
+    text-decoration: none;
+    color: black;
+    display: flex;
+    justify-content: space-between;
 
 
 }

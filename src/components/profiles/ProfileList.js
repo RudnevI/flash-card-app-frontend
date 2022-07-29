@@ -3,11 +3,16 @@ import {useEffect, useState} from "react";
 import {mainSource} from "../../config/sources";
 import {Link} from "react-router-dom";
 import {Diamond} from "@mui/icons-material";
+import {useDispatch} from "react-redux";
+import {set} from '../../store/slicers/profileSlice'
+import ViewTitle from "../ViewTitle";
 
 
 export default function ProfileList() {
 
     const [profiles, setProfiles] = useState([]);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const getProfiles = async () => {
@@ -16,19 +21,19 @@ export default function ProfileList() {
             setProfiles(result);
         }
         getProfiles();
-    }, [])
+    }, []);
+
 
     return (
         <main style={{marginTop: "1rem"}}>
-            <Typography style={{width: '80%', textAlign: 'center', padding: '1rem', backgroundColor: "white"}}
-                        variant='h6'>
-                Profile List
-            </Typography>
+            <ViewTitle textContent="Profile List"></ViewTitle>
             <Stack spacing={1} style={{marginTop: "2rem", marginLeft: "2rem", paddingBottom: "2rem"}}>
 
                 {
                     profiles.map(profile => (
-                        <Link to={`collections/${profile.id}`} className="ListItem" key={profile.id}>
+                        <Link to={`collections/${profile.id}`} onClick={() => {
+                            dispatch(set({name: profile.name, exp: profile.exp}))
+                        }} className="ListItem" key={profile.id}>
                             <p>{profile.name}</p>
                             <div style={{display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
 

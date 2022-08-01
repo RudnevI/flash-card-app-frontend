@@ -9,7 +9,7 @@ export default function Navbar() {
     const currentProfileExp = useSelector(state => state.profile.exp);
 
     const profileStats = () => {
-        if(currentProfileName && currentProfileExp) {
+        if(currentProfileName && currentProfileExp !== undefined) {
             return (
                 <div style={{marginLeft: "auto", display: "flex", justifyContent: "flex-end", columnGap: "1rem"}}>
                     <p>{currentProfileName}</p>
@@ -18,6 +18,7 @@ export default function Navbar() {
             )
         }
     }
+
 
     return (
         <Box sx={{flexGrow: 1}}>

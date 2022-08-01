@@ -4,12 +4,14 @@ const profileSlice = createSlice({
         name: "currentProfile",
         initialState: {
             name: undefined,
-            exp: undefined
+            exp: undefined,
+            id: undefined
         },
         reducers: {
             set: function(state, action) {
                 state.name = action.payload.name;
                 state.exp = action.payload.exp;
+                state.id = action.payload.id;
             }
         }
 

@@ -8,7 +8,14 @@ export default function Options() {
     const [collections, setCollections] = useState([]);
     const [selectedProfile, setSelectedProfile] = useState({});
     const [selectedCollection, setSelectedCollection] = useState({});
-    const [daySpan, setDaySpan] = useState(-1);
+    const [daySpan, setDaySpan] = useState(0);
+
+
+    const valid = () => {
+        return selectedProfile && selectedCollection.id && daySpan > 0;
+    }
+
+
 
     useEffect(() => {
         const getData = async () => {
@@ -63,6 +70,18 @@ export default function Options() {
         )
     }
 
+    const saveOptions = async () => {
+
+
+        const result = await requests.makeRequest(requests.apiRoutes.options, 'POST', {
+            'day_timespan' : daySpan,
+            'collection_id': selectedCollection.id
+        })
+        console.log(result);
+    }
+
+
+
     const daySpanInput = () => {
         if (!selectedCollection.id) return;
         return (
@@ -70,6 +89,12 @@ export default function Options() {
                 style={{marginTop: "2rem", backgroundColor: "white"}}
                 type="number"
                 label="Day span"
+                error={!daySpan || daySpan < 0}
+                helperText="Value must be positive integer"
+                value={daySpan}
+                onChange={(e) => setDaySpan(parseInt(e.target.value))}
+
+
             >
 
             </TextField>
@@ -101,7 +126,7 @@ export default function Options() {
                     {collectionAutocomplete()}
                     {daySpanInput()}
                     <br/>
-                    <Button variant="contained" style={{width: "30%", marginTop: "3rem", backgroundColor: "#b8bfba"}}>
+                    <Button variant="contained" style={{width: "30%", marginTop: "3rem", backgroundColor: "#b8bfba"}} onClick={() => saveOptions()} disabled={!valid()}>
                         Save
                     </Button>
                 </Box>

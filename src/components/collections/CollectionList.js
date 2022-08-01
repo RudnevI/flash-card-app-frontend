@@ -89,7 +89,10 @@ export default function CollectionList() {
                                 justifyContent: "space-between",
                                 textDecoration: "none",
                                 color: "black"
-                            }}>
+                            }}
+
+
+                            >
                                 {collection.name}
                                 <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                                     <Diamond></Diamond>

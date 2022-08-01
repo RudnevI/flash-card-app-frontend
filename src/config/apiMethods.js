@@ -20,3 +20,7 @@ export const createCollection = async(payload) => {
     return await requests.makeRequest(requests.apiRoutes.collections, 'POST', payload)
 }
 
+export const getCardsByCriteria = async(queryString) => {
+    return await requests.makeRequest(requests.apiRoutes.cardsByCriteria, 'GET', undefined, queryString);
+}
+

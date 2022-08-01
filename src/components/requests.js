@@ -6,7 +6,8 @@ const apiRoutes = {
     cards: 'cards',
     collectionsByCriteria: `collections/criteria`,
     options: 'options',
-    profileByCriteria: 'profiles/criteria'
+    profileByCriteria: 'profiles/criteria',
+    cardsByCriteria: 'cardsByCriteria'
 
 
 }

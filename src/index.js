@@ -9,6 +9,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import ProfileList from "./components/profiles/ProfileList";
 import CollectionList from "./components/collections/CollectionList";
 import Options from "./components/Options";
+import CardList from "./components/cards/CardList";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -21,6 +22,7 @@ root.render(
                         <Route index element={<ProfileList/>}></Route>
                         <Route path="collections/:profileId" element={<CollectionList/>}></Route>
                         <Route path="options" element={<Options/>}></Route>
+                        <Route path="collection/:collectionId" element={<CardList/>}></Route>
                     </Route>
                 </Routes>
             </BrowserRouter>

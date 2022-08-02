@@ -1,8 +1,11 @@
-import {configureStore} from "@reduxjs/toolkit";
+import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import profileSlice from "./slicers/profileSlice";
+import backdropSlice from "./slicers/backdropSlice";
 
-export default configureStore({
-    reducer: {
-        profile: profileSlice
-    }
-});
+const reducer = combineReducers({
+    profile: profileSlice,
+    backdrop: backdropSlice
+})
+
+const store =  configureStore({reducer});
+export default store;

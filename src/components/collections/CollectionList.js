@@ -4,13 +4,15 @@ import {Button, Dialog, DialogContent, DialogTitle, Grid, IconButton, Stack, Tex
 import {Diamond} from "@mui/icons-material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import {createCollection, getCollections, getCollectionsByCriteria} from "../../config/apiMethods";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import ViewTitle from "../ViewTitle";
+import {setBackdropShown} from "../../store/slicers/backdropSlice";
 
 export default function CollectionList() {
     const params = useParams();
     const [collections, setCollections] = useState([]);
     const [open, setOpen] = useState(false);
+    const dispatch = useDispatch();
 
     const [collectionName, setCollectionName] = useState('');
     const [collectionNameAlreadyExists, setCollectionNameAlreadyExists] = useState(false);
@@ -19,7 +21,9 @@ export default function CollectionList() {
 
     useEffect(() => {
         const get = async () => {
+            dispatch(setBackdropShown(true));
             const result = await getCollections();
+            dispatch(setBackdropShown(false));
             setCollections(result);
         }
 
@@ -90,7 +94,7 @@ export default function CollectionList() {
                                 textDecoration: "none",
                                 color: "black"
                             }}
-
+                            state={{name: collection.name}}
 
                             >
                                 {collection.name}

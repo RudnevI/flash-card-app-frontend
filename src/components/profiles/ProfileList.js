@@ -3,11 +3,12 @@ import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {Diamond} from "@mui/icons-material";
 import {useDispatch} from "react-redux";
-import {set} from '../../store/slicers/profileSlice'
+import {initialState, set} from '../../store/slicers/profileSlice'
 import ViewTitle from "../ViewTitle";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import requests from "../requests";
 import {getProfiles, getProfilesByCriteria} from "../../config/apiMethods";
+import {setBackdropShown} from "../../store/slicers/backdropSlice";
 
 export default function ProfileList() {
 
@@ -20,12 +21,15 @@ export default function ProfileList() {
 
     useEffect(() => {
 
-      const get = async () => {
-          const result = await getProfiles();
-          setProfiles(result);
-      }
+        dispatch(set(initialState))
+        const get = async () => {
+            dispatch(setBackdropShown(true));
+            const result = await getProfiles();
+            dispatch(setBackdropShown(false));
+            setProfiles(result);
+        }
 
-      get();
+        get();
 
     }, []);
 
@@ -37,8 +41,10 @@ export default function ProfileList() {
         }
         getProfileByName();*/
         const get = async () => {
-            const size = await getProfilesByCriteria(`?${profileName}`).length;
-            setProfileNameAlreadyExists(size > 0);
+
+            const exists = await getProfilesByCriteria(`?name=${profileName}`)
+
+            setProfileNameAlreadyExists(exists.length > 0);
         }
 
         get()
@@ -52,8 +58,8 @@ export default function ProfileList() {
         });
 
 
-            setProfiles([...profiles, response]);
-            setOpen(false);
+        setProfiles([...profiles, response]);
+        setOpen(false);
 
     }
 
@@ -76,7 +82,8 @@ export default function ProfileList() {
                 </DialogContent>
                 <Stack spacing={1} direction='row' justifyContent="center">
                     <Button onClick={() => setOpen(false)}>Cancel</Button>
-                    <Button onClick={() => saveProfile()} disabled={profileNameAlreadyExists || !profileName}>Save</Button>
+                    <Button onClick={() => saveProfile()}
+                            disabled={profileNameAlreadyExists || !profileName}>Save</Button>
                 </Stack>
             </Dialog>
             <Stack spacing={1} style={{marginTop: "2rem", marginLeft: "2rem", paddingBottom: "2rem"}}>
@@ -97,10 +104,10 @@ export default function ProfileList() {
                     ))
                 }
                 <div className="ListItem" style={{justifyContent: "center", backgroundColor: "#b8bfba"}}>
-                <IconButton aria-label="add new profile" component="label"
-                            onClick={() => setOpen(true)}>
-                    <AddCircleIcon></AddCircleIcon>
-                </IconButton>
+                    <IconButton aria-label="add new profile" component="label"
+                                onClick={() => setOpen(true)}>
+                        <AddCircleIcon></AddCircleIcon>
+                    </IconButton>
                 </div>
             </Stack>
 

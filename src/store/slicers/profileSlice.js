@@ -8,7 +8,7 @@ const profileSlice = createSlice({
             id: undefined
         },
         reducers: {
-            set: function(state, action) {
+            set: function (state, action) {
                 state.name = action.payload.name;
                 state.exp = action.payload.exp;
                 state.id = action.payload.id;
@@ -19,3 +19,8 @@ const profileSlice = createSlice({
 )
 export default profileSlice.reducer;
 export const {set} = profileSlice.actions;
+export const initialState = {
+    name: undefined,
+    exp: undefined,
+    id: undefined
+}

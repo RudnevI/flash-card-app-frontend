@@ -24,3 +24,10 @@ export const getCardsByCriteria = async(queryString) => {
     return await requests.makeRequest(requests.apiRoutes.cardsByCriteria, 'GET', undefined, queryString);
 }
 
+export const createCard = async(payload) => {
+    return await requests.makeRequest(requests.apiRoutes.cards, 'POST', payload);
+}
+
+export const getStatuses = async() => {
+    return await requests.makeRequest(requests.apiRoutes.statuses, 'GET');
+}

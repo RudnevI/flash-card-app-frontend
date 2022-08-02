@@ -7,7 +7,8 @@ const apiRoutes = {
     collectionsByCriteria: `collections/criteria`,
     options: 'options',
     profileByCriteria: 'profiles/criteria',
-    cardsByCriteria: 'cardsByCriteria'
+    cardsByCriteria: 'cards/criteria',
+    statuses: 'statuses'
 
 
 }
@@ -31,7 +32,6 @@ function constructOptions(method, payload) {
 
 async function makeRequest(route, method = 'GET', payload = undefined, queryString = '') {
 
-console.log(constructOptions(method, payload));
             const response = await fetch(`${mainSource}${route}${queryString}`, constructOptions(method, payload));
     return await response.json();
 

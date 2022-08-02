@@ -77,7 +77,6 @@ export default function Options() {
             'day_timespan' : daySpan,
             'collection_id': selectedCollection.id
         })
-        console.log(result);
     }
 
 

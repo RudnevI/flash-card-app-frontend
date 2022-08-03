@@ -31,3 +31,11 @@ export const createCard = async(payload) => {
 export const getStatuses = async() => {
     return await requests.makeRequest(requests.apiRoutes.statuses, 'GET');
 }
+
+export const updateCollection = async(payload) => {
+    return await requests.makeRequest(requests.apiRoutes.collectionsByCriteria, 'PUT', payload)
+}
+
+export const updateCard = async(payload) => {
+    return await requests.makeRequest(requests.apiRoutes.cardsByCriteria, 'PUT', payload);
+}

@@ -31,7 +31,7 @@ export default function ProfileList() {
 
         get();
 
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
         /*const getProfileByName = async () => {

@@ -1,11 +1,36 @@
 import {useState} from "react";
-import {Box} from "@mui/material";
+import {Box, Button, Stack, Typography} from "@mui/material";
 
-export default function Card({question, answer}) {
+export default function Card({question, answer, collectionId, collectionExp, successHandler, failureHandler, card}) {
     const [flip, setFlip] = useState(false);
 
+    const handleSuccess = () => {
+        successHandler(card);
+        toggleFlip();
+    }
+
+
+
     const renderContent = () => {
-        return flip ? answer : question;
+        return flip ?
+
+            (
+                <Stack spacing={2}>
+
+                    <Typography alignSelf="center">{answer}</Typography>
+                    <Typography>Did you get it right?</Typography>
+                    <Stack direction="row" spacing={2}>
+                        <Button variant="contained" color="success" onClick={() => handleSuccess()}>YES</Button>
+                        <Button variant="contained" color="error" onClick={() => toggleFlip()}>NO</Button>
+                    </Stack>
+                </Stack>
+            )
+
+            : (
+                <Typography onClick={() => toggleFlip()}>
+                    {question}
+                </Typography>
+            );
     }
 
     const toggleFlip = () => {
@@ -13,7 +38,7 @@ export default function Card({question, answer}) {
     }
 
     return (
-        <Box style={{padding: "5rem", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white", color: "black"}} onClick={() => toggleFlip()}>
+        <Box style={{width: "100%", height: "30vmin", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white", color: "black"}}>
             {renderContent()}
         </Box>
     )

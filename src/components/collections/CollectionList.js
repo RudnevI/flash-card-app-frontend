@@ -30,7 +30,7 @@ export default function CollectionList() {
         get();
 
 
-    }, [params.profileId]);
+    }, [params.profileId, dispatch]);
 
 
     useEffect(() => {

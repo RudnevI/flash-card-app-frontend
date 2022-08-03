@@ -1,10 +1,17 @@
 import {useLocation, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {createCard, getCardsByCriteria, getStatuses} from "../../config/apiMethods";
-import {Box, Button, Dialog, DialogTitle, FormLabel, Grid, IconButton, Stack, TextareaAutosize} from "@mui/material";
+import {
+    createCard,
+    getCardsByCriteria,
+    getCollectionsByCriteria,
+    getStatuses, updateCard,
+    updateCollection
+} from "../../config/apiMethods";
+import {Button, Dialog, DialogTitle, FormLabel, Grid, IconButton, Stack, TextareaAutosize} from "@mui/material";
 import ViewTitle from "../ViewTitle";
 import {AddCircle} from "@mui/icons-material";
 import Card from "./Card";
+import {datePlusInterval} from "../../config/util";
 
 export default function CardList() {
 
@@ -16,13 +23,17 @@ export default function CardList() {
 
     const [questionToAdd, setQuestionToAdd] = useState("");
     const [answerToAdd, setAnswerToAdd] = useState("");
+    const [collection, setCollection] = useState({});
 
     const location = useLocation();
 
     useEffect(() => {
         const get = async () => {
-            const result = await getCardsByCriteria(`?collection_id=${params.collectionId}`);
+            const result = await getCardsByCriteria(`?collection_id=${params.collectionId}&repeat_date=${new Date().toLocaleDateString('kk')}`);
             setCards(result);
+
+            const collectionResult = await getCollectionsByCriteria(`?id=${params.collectionId}`);
+            setCollection(collectionResult[0]);
         }
         get();
     }, [params.collectionId])
@@ -33,9 +44,44 @@ export default function CardList() {
             question: questionToAdd,
             correct_answer: answerToAdd,
             collection_id: params.collectionId,
-            status_id: statuses.find(status => status.name === 'new').id
+            status_id: statuses.find(status => status.name === 'new').id,
+            repeat_date: new Date().toLocaleDateString()
         })
         setCards([...cards, newCard]);
+    }
+
+    const successHandler = async (card) => {
+
+
+        await updateCollection({
+            criteria: {
+                id: collection.id
+            },
+            data: {
+                exp: collection.exp + 1
+            }
+        })
+
+        await updateCard({
+            criteria: {
+                id: card.id,
+
+            },
+            data: {
+                //TODO: add interval functionality
+                repeat_date: datePlusInterval((card.repeat_date ? card.repeat_date : new Date()), 1).toLocaleDateString()
+            }
+        })
+
+
+        setCards(cards.filter(stateCard => stateCard.id !== card.id));
+
+
+    }
+
+
+    const failureHandler = () => {
+
     }
 
 
@@ -48,7 +94,9 @@ export default function CardList() {
 
                 {cards.map(card => (
                     <Grid item md={4} xs={12} key={card.id}>
-                        <Card answer={card.correct_answer} question={card.question}></Card>
+                        <Card answer={card.correct_answer} question={card.question} collectionId={collection.id}
+                              collectionExp={collection.exp} successHandler={successHandler} card={card}
+                              failureHandler={failureHandler}></Card>
                     </Grid>
                 ))}
                 <Grid item md={cards.length > 0 ? 4 : 12} xs={12} style={{

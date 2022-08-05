@@ -10,6 +10,7 @@ import ProfileList from "./components/profiles/ProfileList";
 import CollectionList from "./components/collections/CollectionList";
 import Options from "./components/Options";
 import CardList from "./components/cards/CardList";
+import Master from "./components/management/Master";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -23,6 +24,7 @@ root.render(
                         <Route path="collections/:profileId" element={<CollectionList/>}></Route>
                         <Route path="options" element={<Options/>}></Route>
                         <Route path="collection/:collectionId" element={<CardList/>}></Route>
+                        <Route path="manage" element={<Master/>}></Route>
                     </Route>
                 </Routes>
             </BrowserRouter>

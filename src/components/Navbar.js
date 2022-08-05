@@ -26,6 +26,7 @@ export default function Navbar() {
                 <Toolbar variant="dense" className="NavLink">
                     <NavbarElement path='/' textContent='Home'></NavbarElement>
                     <NavbarElement path='/options' textContent='Options'></NavbarElement>
+                    <NavbarElement path='/manage' textContent='Manage'></NavbarElement>
                     {profileStats()}
 
                 </Toolbar>

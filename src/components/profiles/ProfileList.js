@@ -7,8 +7,9 @@ import {initialState, set} from '../../store/slicers/profileSlice'
 import ViewTitle from "../ViewTitle";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import requests from "../requests";
-import {getProfiles, getProfilesByCriteria} from "../../config/apiMethods";
+import {deleteProfileByCriteria, getProfiles, getProfilesByCriteria} from "../../config/apiMethods";
 import {setBackdropShown} from "../../store/slicers/backdropSlice";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function ProfileList() {
 
@@ -16,6 +17,8 @@ export default function ProfileList() {
     const [open, setOpen] = useState(false);
     const [profileName, setProfileName] = useState("");
     const [profileNameAlreadyExists, setProfileNameAlreadyExists] = useState(false);
+
+    const [rerender, setRerender] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -31,7 +34,7 @@ export default function ProfileList() {
 
         get();
 
-    }, [dispatch]);
+    }, [dispatch, rerender]);
 
     useEffect(() => {
         /*const getProfileByName = async () => {
@@ -53,8 +56,7 @@ export default function ProfileList() {
 
     const saveProfile = async () => {
         const response = await requests.makeRequest(requests.apiRoutes.profiles, 'POST', {
-            name: profileName,
-            exp: 0
+            name: profileName, exp: 0
         });
 
 
@@ -63,8 +65,12 @@ export default function ProfileList() {
 
     }
 
-    return (
-        <main style={{marginTop: "1rem"}}>
+    const deleteProfile = async (profileId) => {
+        await deleteProfileByCriteria(`?id=${profileId}`);
+        setRerender(true);
+    }
+
+    return (<main style={{marginTop: "1rem"}}>
             <ViewTitle textContent="Profile List"></ViewTitle>
             <Dialog open={open}>
                 <DialogTitle>Create profile</DialogTitle>
@@ -88,21 +94,28 @@ export default function ProfileList() {
             </Dialog>
             <Stack spacing={1} style={{marginTop: "2rem", marginLeft: "2rem", paddingBottom: "2rem"}}>
 
-                {
-                    profiles.map(profile => (
+                {profiles.map(profile => (
+
+                    <div style={{display: "flex"}} key={profile.id}>
                         <Link to={`collections/${profile.id}`} onClick={() => {
                             dispatch(set(profile))
-                        }} className="ListItem" key={profile.id}>
+                        }} className="ListItem" >
                             <p>{profile.name}</p>
-                            <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
 
+
+
+                            <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                                 <Diamond></Diamond>
                                 <p>{profile.exp}</p>
 
                             </div>
+
                         </Link>
-                    ))
-                }
+                        <IconButton style={{marginLeft: "1rem"}} size="large" onClick={() => deleteProfile(profile.id)}>
+                            <DeleteIcon></DeleteIcon>
+                        </IconButton>
+                    </div>
+                      ))}
                 <div className="ListItem" style={{justifyContent: "center", backgroundColor: "#b8bfba"}}>
                     <IconButton aria-label="add new profile" component="label"
                                 onClick={() => setOpen(true)}>
@@ -111,6 +124,5 @@ export default function ProfileList() {
                 </div>
             </Stack>
 
-        </main>
-    )
+        </main>)
 }

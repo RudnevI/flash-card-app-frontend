@@ -22,7 +22,7 @@ export default function CollectionList() {
     useEffect(() => {
         const get = async () => {
             dispatch(setBackdropShown(true));
-            const result = await getCollections();
+            const result = await getCollectionsByCriteria(`?profile_id=${params.profileId}`);
             dispatch(setBackdropShown(false));
             setCollections(result);
         }

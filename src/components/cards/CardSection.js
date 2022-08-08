@@ -2,13 +2,13 @@ import ViewTitle from "../ViewTitle";
 import {Button, Dialog, DialogTitle, FormLabel, Grid, IconButton, Stack, TextareaAutosize} from "@mui/material";
 import Card from "./Card";
 import {AddCircle} from "@mui/icons-material";
-import {useEffect, useState} from "react";
-import {createCard, updateCard, updateCollection} from "../../config/apiMethods";
+import {useState} from "react";
+import {createCard, getCollectionsByCriteria, updateCard, updateCollection} from "../../config/apiMethods";
 import moment from "moment";
-import {datePlusInterval} from "../../config/util";
+import {dateFormat} from "../../config/dateUtil";
 
 
-export default function CardSection({cards, title, canAdd, collectionId, rerenderList}) {
+export default function CardSection({cards, title, canAdd, collectionId, rerenderList, dateInterval}) {
 
     const [open, setOpen] = useState(false);
 
@@ -18,11 +18,13 @@ export default function CardSection({cards, title, canAdd, collectionId, rerende
 
 
 
+
+
     const saveCard = async () => {
         const newCard = await createCard({
             question: questionToAdd,
             correct_answer: answerToAdd,
-            repeat_date: moment(new Date()).format('d.M.Y'),
+            repeat_date: moment(new Date()).format(dateFormat),
             status_id: 1,
             collection_id: collectionId
         })
@@ -38,10 +40,12 @@ export default function CardSection({cards, title, canAdd, collectionId, rerende
 
         let repeatDate;
         if (card.status_id === 3) {
-            repeatDate = moment(new Date()).format('d.M.Y');
+            repeatDate = moment().format(dateFormat);
         }
-        else repeatDate = moment(datePlusInterval(card.repeat_date ? moment(card.repeat_date).toDate() : new Date(), 1)).format('d.M.Y')
+        else repeatDate = (card.repeat_date ? moment() : moment(card.repeat_date)).add(dateInterval, 'days').format(dateFormat)
         console.log(repeatDate);
+
+        const collection = await getCollectionsByCriteria(`?id=${collectionId}`);
        await updateCard({
             criteria: {
                 id: card.id
@@ -55,6 +59,14 @@ export default function CardSection({cards, title, canAdd, collectionId, rerende
             }
         });
 
+       await updateCollection({
+           criteria: {
+               id: collectionId
+           },
+           data: {
+               exp: (collection.exp) ? collection.exp + 1 : 1
+           }
+       })
 
 
         rerenderList();
@@ -74,7 +86,8 @@ export default function CardSection({cards, title, canAdd, collectionId, rerende
 
             }
         })
-        if(!result.id) return;
+        if(!result) return;
+        console.log('RERENDER');
         rerenderList();
 
     }

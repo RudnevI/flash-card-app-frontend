@@ -43,3 +43,19 @@ export const updateCard = async(payload) => {
 export const deleteProfileByCriteria = async (queryString) => {
     return await requests.makeRequest(requests.apiRoutes.profileByCriteria, 'DELETE', undefined, queryString)
 }
+
+export const getStatusByCriteria = async(queryString) => {
+    return await requests.makeRequest(requests.apiRoutes.statusesByCriteria, 'GET', undefined, queryString);
+}
+
+export const getOptionsByCriteria = async(queryString) => {
+    return await requests.makeRequest(requests.apiRoutes.optionsByCriteria, 'GET', undefined, queryString);
+}
+
+export const deleteCardByCriteria = async (queryString) => {
+    return await requests.makeRequest(requests.apiRoutes.cardsByCriteria, 'DELETE', undefined, queryString);
+}
+
+export const deleteCollectionByCriteria = async(queryString) => {
+    return await requests.makeRequest(requests.apiRoutes.collectionsByCriteria, 'DELETE', undefined, queryString);
+}

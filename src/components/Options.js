@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import requests from "./requests";
 import {Autocomplete, Box, Button, TextField} from "@mui/material";
 import ViewTitle from "./ViewTitle";
+import {getOptionsByCriteria} from "../config/apiMethods";
 
 export default function Options() {
     const [profiles, setProfiles] = useState([]);
@@ -11,9 +12,12 @@ export default function Options() {
     const [daySpan, setDaySpan] = useState(0);
 
 
+
+
     const valid = () => {
         return selectedProfile && selectedCollection.id && daySpan > 0;
     }
+
 
 
 
@@ -34,6 +38,16 @@ export default function Options() {
         getCollectionsByProfile();
 
     }, [selectedProfile])
+
+    useEffect(() => {
+        if(!selectedCollection) return;
+        const getDaySpan = async() => {
+            const result = await getOptionsByCriteria(`?collection_id=${selectedCollection.id}`);
+            setDaySpan(result.day_timespan);
+        }
+        getDaySpan();
+
+    }, [selectedCollection])
 
 
     const handleProfileSelect = (e, value) => {

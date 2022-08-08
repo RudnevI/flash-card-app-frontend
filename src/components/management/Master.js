@@ -1,8 +1,13 @@
-import {Box, Tab, Tabs} from "@mui/material";
+import {Box, Tab, Tabs, TextField} from "@mui/material";
 import {useState} from "react";
 import requests from "../requests";
 import ContentTable from "./ContentTable";
-import {getProfilesByCriteria} from "../../config/apiMethods";
+import {
+    deleteCardByCriteria, deleteCollectionByCriteria,
+    deleteProfileByCriteria,
+    getProfilesByCriteria,
+    getStatusByCriteria
+} from "../../config/apiMethods";
 
 export default function Master() {
 
@@ -16,11 +21,18 @@ export default function Master() {
                 'exp'*/
                 {
                     name: 'name',
+                    editForm: (currentValue) => {
+                        return <TextField label="Profile Name" value={currentValue}></TextField>;
+                    }
                 },
                 {
-                  name: 'exp'
+                    name: 'exp',
+                    editForm: (currentValue) => {
+                        return <TextField type="number" label="Experience Points" value={currentValue}></TextField>;
+                    }
                 }
-            ]
+            ],
+            deleteHandler: deleteProfileByCriteria
         },
         {
             title: "Collections",
@@ -40,19 +52,36 @@ export default function Master() {
                         const result = await getProfilesByCriteria(`?id=${profileId}`);
                         return result[0].name;
                     }
-                }
-            ]
+                },
+
+            ],
+            deleteHandler: deleteCollectionByCriteria
         },
         {
             title: "Cards",
             route: requests.apiRoutes.cards,
             headers: ['Questions', 'Answer', 'Status', 'Repeat Date'],
             parameters: [
-                'question',
-                'correct_answer',
-                'status',
-                'repeat_date'
-            ]
+                {
+                    name: 'question'
+                },
+                {
+                    name: 'correct_answer'
+                },
+                {
+                    name: 'status_id',
+                    handler: async(statusId) => {
+                        const result = await getStatusByCriteria(`?id=${statusId}`);
+                        return result[0].name
+                    }
+
+                },
+                {
+                    name: 'repeat_date'
+                }
+            ],
+            deleteHandler: deleteCardByCriteria
+
         }
     ];
 
@@ -72,6 +101,7 @@ export default function Master() {
             {tabMenu.map((tab, index) => (
                 <ContentTable value={currentTab} index={index} route={tab.route}
                               headers={tab.headers} parameters={tab.parameters}
+                              key={index} deleteHandler={tab.deleteHandler}
                 ></ContentTable>
             ))}
         </main>

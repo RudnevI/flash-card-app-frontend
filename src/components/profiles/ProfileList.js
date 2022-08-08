@@ -9,7 +9,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import requests from "../requests";
 import {deleteProfileByCriteria, getProfiles, getProfilesByCriteria} from "../../config/apiMethods";
 import {setBackdropShown} from "../../store/slicers/backdropSlice";
-import DeleteIcon from '@mui/icons-material/Delete';
+
 
 export default function ProfileList() {
 
@@ -111,9 +111,7 @@ export default function ProfileList() {
                             </div>
 
                         </Link>
-                        <IconButton style={{marginLeft: "1rem"}} size="large" onClick={() => deleteProfile(profile.id)}>
-                            <DeleteIcon></DeleteIcon>
-                        </IconButton>
+
                     </div>
                       ))}
                 <div className="ListItem" style={{justifyContent: "center", backgroundColor: "#b8bfba"}}>

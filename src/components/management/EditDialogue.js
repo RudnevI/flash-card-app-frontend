@@ -8,9 +8,7 @@ export default function EditDialogue({parameters, dialogueShown, title, editHand
 
     useEffect(() => {
         setShown(dialogueShown)
-        for (const parameter of parameters) {
 
-        }
     }, [dialogueShown])
 
 

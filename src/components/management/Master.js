@@ -1,4 +1,4 @@
-import {Box, Tab, Tabs, TextField} from "@mui/material";
+import {Autocomplete, Box, MenuItem, Select, Tab, Tabs, TextField} from "@mui/material";
 import {useState} from "react";
 import requests from "../requests";
 import ContentTable from "./ContentTable";
@@ -8,6 +8,8 @@ import {
     getProfilesByCriteria,
     getStatusByCriteria
 } from "../../config/apiMethods";
+import ProfileSlice from "../../store/slicers/profileSlice";
+import ProfileSelect from "../profiles/ProfileSelect";
 
 export default function Master() {
 
@@ -41,9 +43,15 @@ export default function Master() {
             parameters: [
                 {
                     name: 'name',
+                    editForm: (currentValue) => {
+                        return <TextField label="Collection Name" value={currentValue}></TextField>;
+                    }
                 },
                 {
-                    name: 'exp'
+                    name: 'exp',
+                    editForm: (currentValue) => {
+                        return <TextField type="number" label="Experience Points" value={currentValue}></TextField>;
+                    }
                 },
 
                 {
@@ -51,6 +59,9 @@ export default function Master() {
                     handler: async (profileId) => {
                         const result = await getProfilesByCriteria(`?id=${profileId}`);
                         return result[0].name;
+                    },
+                    editForm: (profileId) => {
+                       return <ProfileSelect profileId={profileId}></ProfileSelect>
                     }
                 },
 

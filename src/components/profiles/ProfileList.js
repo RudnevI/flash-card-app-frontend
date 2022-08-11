@@ -10,7 +10,6 @@ import requests from "../requests";
 import {deleteProfileByCriteria, getProfiles, getProfilesByCriteria} from "../../config/apiMethods";
 import {setBackdropShown} from "../../store/slicers/backdropSlice";
 
-
 export default function ProfileList() {
 
     const [profiles, setProfiles] = useState([]);
@@ -70,6 +69,7 @@ export default function ProfileList() {
         setRerender(true);
     }
 
+
     return (<main style={{marginTop: "1rem"}}>
             <ViewTitle textContent="Profile List"></ViewTitle>
             <Dialog open={open}>
@@ -92,10 +92,8 @@ export default function ProfileList() {
                             disabled={profileNameAlreadyExists || !profileName}>Save</Button>
                 </Stack>
             </Dialog>
-            <Stack spacing={1} style={{marginTop: "2rem", marginLeft: "2rem", paddingBottom: "2rem"}}>
-
+            <Stack spacing={1} style={{marginTop: "2rem", marginLeft: "2rem", paddingBottom: "2rem"}} rowGap={3}>
                 {profiles.map(profile => (
-
                     <div style={{display: "flex"}} key={profile.id}>
                         <Link to={`collections/${profile.id}`} onClick={() => {
                             dispatch(set(profile))

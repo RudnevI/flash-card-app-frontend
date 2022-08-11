@@ -59,3 +59,12 @@ export const deleteCardByCriteria = async (queryString) => {
 export const deleteCollectionByCriteria = async(queryString) => {
     return await requests.makeRequest(requests.apiRoutes.collectionsByCriteria, 'DELETE', undefined, queryString);
 }
+
+export const updateProfile = async(payload) => {
+    return await requests.makeRequest(requests.apiRoutes.profiles, 'PUT', payload);
+}
+
+export const getCards = async() => {
+    return await requests.makeRequest(requests.apiRoutes.cards, 'GET');
+}
+

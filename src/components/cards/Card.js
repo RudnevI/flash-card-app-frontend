@@ -1,8 +1,10 @@
-import {useState} from "react";
-import {Box, Button, Stack, Typography} from "@mui/material";
+import {useEffect, useState} from "react";
+import {Box, Button, Grow, Stack, Typography} from "@mui/material";
 
 export default function Card({card, successHandler, failureHandler}) {
     const [flip, setFlip] = useState(false);
+
+    const [shown, setShown] = useState(false);
 
     const handleSuccess = () => {
         successHandler(card);
@@ -14,7 +16,9 @@ export default function Card({card, successHandler, failureHandler}) {
         toggleFlip();
     }
 
-
+    useEffect(() => {
+        setShown(true);
+    }, [])
 
     const renderContent = () => {
         return flip ?
@@ -43,8 +47,18 @@ export default function Card({card, successHandler, failureHandler}) {
     }
 
     return (
-        <Box style={{width: "100%", height: "30vmin", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "white", color: "black"}}>
-            {renderContent()}
-        </Box>
+        <Grow in={shown} timeout={1000} style={{ transformOrigin: '0 0 0' }}>
+            <Box style={{
+                width: "100%",
+                height: "30vmin",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "white",
+                color: "black"
+            }}>
+                {renderContent()}
+            </Box>
+        </Grow>
     )
 }

@@ -1,14 +1,20 @@
 import {
     deleteCardByCriteria,
     deleteCollectionByCriteria,
-    deleteProfileByCriteria, getCards, getCardsWithRelations,
-    getCollectionsByCriteria, getCollectionsWithRelations, getProfiles,
-    getProfilesByCriteria, getStatusByCriteria, updateCard, updateCollection,
+    deleteProfileByCriteria,
+    getCardsWithRelations,
+    getCollectionsWithRelations,
+    getProfiles,
+    updateCard,
+    updateCollection,
     updateProfile
 } from "../../config/apiMethods";
 import {Box, Tab, Tabs} from "@mui/material";
 import {useState} from "react";
 import ContentTable from "./ContentTable";
+import EditProfile from "../profiles/EditProfile";
+import EditCollection from "../collections/EditCollection";
+import EditCard from "../cards/EditCard";
 
 const tabs = ['Profiles', 'Collections', 'Cards'];
 
@@ -21,7 +27,8 @@ const parameters = [
         },
         getItemsMethod: getProfiles,
         deleteMethod: deleteProfileByCriteria,
-        updateMethod: updateProfile
+        updateMethod: updateProfile,
+        renderEditForm: (item, setParentItem) => <EditProfile profile={item} setParentFormItem={setParentItem}></EditProfile>
     },
 
     {
@@ -37,6 +44,7 @@ const parameters = [
         getItemsMethod: getCollectionsWithRelations,
         deleteMethod: deleteCollectionByCriteria,
         updateMethod: updateCollection,
+        renderEditForm: (item, setParentItem) => <EditCollection collection={item} setParentFormItem={setParentItem}></EditCollection>
 
     },
     {
@@ -57,6 +65,7 @@ const parameters = [
         getItemsMethod: getCardsWithRelations,
         deleteMethod: deleteCardByCriteria,
         updateMethod: updateCard,
+        renderEditForm: (item, setParentItem) => <EditCard card={item} setParentFormItem={setParentItem}></EditCard>
 
     }
 

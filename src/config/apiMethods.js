@@ -61,7 +61,7 @@ export const deleteCollectionByCriteria = async(queryString) => {
 }
 
 export const updateProfile = async(payload) => {
-    return await requests.makeRequest(requests.apiRoutes.profiles, 'PUT', payload);
+    return await requests.makeRequest(requests.apiRoutes.profileByCriteria, 'PUT', payload);
 }
 
 export const getCards = async() => {

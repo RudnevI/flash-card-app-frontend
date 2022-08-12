@@ -115,7 +115,7 @@ export default function ContentTable({currentIndex, index, parameters}) {
                 </TableBody>
             </Table>
             <DeleteDialog shown={deleteDialogShown} setShownParent={setDeleteDialogShown} itemId={currentItem.id} rerenderParentMethod={rerenderComponent} deleteMethod={parameters.deleteMethod}></DeleteDialog>
-            <EditDialog shown={editDialogShown} setShownParent={setEditDialogShown}></EditDialog>
+            <EditDialog shown={editDialogShown} setShownParent={setEditDialogShown} item={currentItem} rerenderParentMethod={rerenderComponent} editMethod={parameters.updateMethod} renderEditForm={parameters.renderEditForm}></EditDialog>
         </TableContainer>
     )
 }

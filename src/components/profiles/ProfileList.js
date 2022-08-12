@@ -1,4 +1,4 @@
-import {Box, Button, Dialog, DialogContent, DialogTitle, IconButton, Stack, TextField} from "@mui/material";
+import {Box, Button, Dialog, DialogContent, DialogTitle, Stack, TextField} from "@mui/material";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {Diamond} from "@mui/icons-material";
@@ -7,7 +7,7 @@ import {initialState, set} from '../../store/slicers/profileSlice'
 import ViewTitle from "../ViewTitle";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import requests from "../requests";
-import {deleteProfileByCriteria, getProfiles, getProfilesByCriteria} from "../../config/apiMethods";
+import {getProfiles, getProfilesByCriteria} from "../../config/apiMethods";
 import {setBackdropShown} from "../../store/slicers/backdropSlice";
 
 export default function ProfileList() {
@@ -64,10 +64,7 @@ export default function ProfileList() {
 
     }
 
-    const deleteProfile = async (profileId) => {
-        await deleteProfileByCriteria(`?id=${profileId}`);
-        setRerender(true);
-    }
+
 
 
     return (<main style={{marginTop: "1rem"}}>

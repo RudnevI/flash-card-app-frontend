@@ -9,12 +9,15 @@ import {useEffect, useState} from "react";
 import {IconButton, Tooltip} from "@mui/material";
 import {Delete, Edit} from "@mui/icons-material";
 import DeleteDialog from "./DeleteDialog";
+import EditDialog from "./EditDialog";
 
 export default function ContentTable({currentIndex, index, parameters}) {
 
     const [items, setItems] = useState([]);
 
-    const [deleteDialogShown, setDeleteDialogShown] = useState(false)
+    const [deleteDialogShown, setDeleteDialogShown] = useState(false);
+
+    const [editDialogShown, setEditDialogShown] = useState(false);
 
     const [rerender, setRerender] = useState(false);
 
@@ -47,6 +50,11 @@ export default function ContentTable({currentIndex, index, parameters}) {
     const handleDeleteButtonClick = (item) => {
         setCurrentItem(item);
         setDeleteDialogShown(true);
+    }
+
+    const handleEditButtonClick = (item) => {
+        setCurrentItem(item);
+        setEditDialogShown(true);
     }
 
 
@@ -96,7 +104,7 @@ export default function ContentTable({currentIndex, index, parameters}) {
                                         <Delete></Delete>
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title={"Edit record"}>
+                                <Tooltip title={"Edit record"} onClick={() => handleEditButtonClick(item)}>
                                     <IconButton>
                                         <Edit></Edit>
                                     </IconButton>
@@ -107,7 +115,7 @@ export default function ContentTable({currentIndex, index, parameters}) {
                 </TableBody>
             </Table>
             <DeleteDialog shown={deleteDialogShown} setShownParent={setDeleteDialogShown} itemId={currentItem.id} rerenderParentMethod={rerenderComponent} deleteMethod={parameters.deleteMethod}></DeleteDialog>
-
+            <EditDialog shown={editDialogShown} setShownParent={setEditDialogShown}></EditDialog>
         </TableContainer>
     )
 }

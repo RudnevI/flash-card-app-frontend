@@ -1,5 +1,5 @@
 import ViewTitle from "../ViewTitle";
-import {Button, Dialog, DialogTitle, FormLabel, Grid, IconButton, Stack, TextareaAutosize} from "@mui/material";
+import {Box, Button, Dialog, DialogTitle, FormLabel, Grid, IconButton, Stack, TextareaAutosize} from "@mui/material";
 import Card from "./Card";
 import {AddCircle} from "@mui/icons-material";
 import {useState} from "react";
@@ -94,18 +94,24 @@ export default function CardSection({cards, title, canAdd, collectionId, rerende
 
     const addCardBlock = () => {
         return canAdd ? (
-            <Grid item md={4} xs={12} style={{
-                padding: "5rem",
-                textAlign: "center",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                textDecoration: "none",
-                color: "black"
-            }}>
-                <IconButton onClick={() => setOpen(true)}>
+            <Grid item md={4} xs={12}
+                  onClick={() => setOpen(true)}
+
+            >
+                <Box style={{
+                    width: "100%",
+                    height: "30vmin",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    color: "black"
+                }}
+                className={"AddItem"}
+                >
+
                     <AddCircle></AddCircle>
-                </IconButton>
+                </Box>
+
             </Grid>
 
         ) : "";

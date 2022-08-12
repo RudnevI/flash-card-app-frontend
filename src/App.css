@@ -19,3 +19,14 @@
 
 
 }
+
+.AddItem {
+    background-color: #b8bfba;
+    transition-duration: 1s;
+}
+
+.AddItem:hover {
+    background-color: #a0a7a2;
+    transition-duration: 1s;
+}
+

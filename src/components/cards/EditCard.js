@@ -47,33 +47,33 @@ export default function EditCard({card, setParentFormItem}) {
     }, [])
 
     return (<Stack spacing={3} marginTop={1}>
-            <TextField label={"Question"} onChange={(e) => setQuestion(e.target.value)} defaultValue={card.question}
-                       InputLabelProps={{shrink: true}}
-            ></TextField>
-            <TextField label={"Answer"}
-                       onChange={(e) => setAnswer(e.target.value)}
-                       rows={3}
-                       defaultValue={card.correct_answer}
-                       InputLabelProps={{shrink: true}}
+        <TextField label={"Question"} onChange={(e) => setQuestion(e.target.value)} defaultValue={card.question}
+                   InputLabelProps={{shrink: true}}
+        ></TextField>
+        <TextField label={"Answer"}
+                   onChange={(e) => setAnswer(e.target.value)}
+                   rows={3}
+                   defaultValue={card.correct_answer}
+                   InputLabelProps={{shrink: true}}
 
-            ></TextField>
-            <LocalizationProvider dateAdapter={AdapterMoment}>
-                <DesktopDatePicker
-                    label="Scheduled repetition date"
-                    inputFormat="DD/MM/YYYY"
-                
-                    onChange={(value) => setRepeatDate(value)}
-                    renderInput={(params) => <TextField {...params} />} value={repeatDate}></DesktopDatePicker>
-            </LocalizationProvider>
+        ></TextField>
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+            <DesktopDatePicker
+                label="Scheduled repetition date"
+                inputFormat="DD/MM/YYYY"
 
-            <Select label={"Status"} value={card.status_id} onChange={(e) => setStatusId(e.target.value)}>
-                {statuses.map(status => (<MenuItem value={status.id} key={status.id}>{status.name}</MenuItem>))}
-            </Select>
-            <Select label={"Collection"} value={card.collection_id} onChange={e => setCollectionId(e.target.value)}>
-                {collections.map(collection => (
-                    <MenuItem value={parseInt(collection.id)}>{collection.name}</MenuItem>))}
-            </Select>
+                onChange={(value) => setRepeatDate(value)}
+                renderInput={(params) => <TextField {...params} />} value={repeatDate}></DesktopDatePicker>
+        </LocalizationProvider>
+
+        <Select label={"Status"} value={card.status_id} onChange={(e) => setStatusId(e.target.value)}>
+            {statuses.map(status => (<MenuItem value={status.id} key={status.id}>{status.name}</MenuItem>))}
+        </Select>
+        <Select label={"Collection"} value={card.collection_id} onChange={e => setCollectionId(e.target.value)}>
+            {collections.map(collection => (
+                <MenuItem value={parseInt(collection.id)}>{collection.name}</MenuItem>))}
+        </Select>
 
 
-        </Stack>)
+    </Stack>)
 }

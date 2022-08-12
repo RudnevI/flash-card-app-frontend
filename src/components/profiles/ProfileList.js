@@ -1,4 +1,4 @@
-import {Button, Dialog, DialogContent, DialogTitle, IconButton, Stack, TextField} from "@mui/material";
+import {Box, Button, Dialog, DialogContent, DialogTitle, IconButton, Stack, TextField} from "@mui/material";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {Diamond} from "@mui/icons-material";
@@ -74,8 +74,10 @@ export default function ProfileList() {
             <ViewTitle textContent="Profile List"></ViewTitle>
             <Dialog open={open}>
                 <DialogTitle>Create profile</DialogTitle>
-                <DialogContent style={{marginTop: "1rem"}}>
+                <DialogContent>
+                    <Box marginTop={1}>
                     <TextField
+
                         error={profileNameAlreadyExists}
                         autoFocus
                         fullWidth
@@ -85,6 +87,7 @@ export default function ProfileList() {
                     >
 
                     </TextField>
+                    </Box>
                 </DialogContent>
                 <Stack spacing={1} direction='row' justifyContent="center">
                     <Button onClick={() => setOpen(false)}>Cancel</Button>

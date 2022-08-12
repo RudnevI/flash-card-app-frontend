@@ -6,36 +6,48 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {useEffect, useState} from "react";
+import {IconButton, Tooltip} from "@mui/material";
+import {Delete, Edit} from "@mui/icons-material";
+import DeleteDialog from "./DeleteDialog";
 
 export default function ContentTable({currentIndex, index, parameters}) {
 
     const [items, setItems] = useState([]);
 
-    const [currentParameterValue, setCurrentParameterValue] = useState(null);
+    const [deleteDialogShown, setDeleteDialogShown] = useState(false)
+
+    const [rerender, setRerender] = useState(false);
+
+    const [currentItem, setCurrentItem] = useState({});
 
     useEffect(() => {
 
-        if(!currentIndex === index) return;
-        parameters.getItemsMethod().then((result) => setItems(result))
+        if (currentIndex !== index) return;
 
-    }, [])
+        const relations = Object.keys(parameters.columnAttributeMap).filter(key => !!parameters.columnAttributeMap[key].type);
+
+        const promise = (relations.length === 0) ? parameters.getItemsMethod() : parameters.getItemsMethod(relations);
+
+        promise.then((result) => setItems(result));
 
 
-    const setCurrentParameter = async (item, key) => {
-/*        const attribute = parameters.columnAttributeMap[key];
-        if(attribute.type) {
-            const handler = parameters.handlers[key];
-            const result =  await handler(attribute.handlerParameter);
-            setCurrentParameterValue(result);
-        }
+    }, [currentIndex, rerender])
 
-        setCurrentParameterValue(item[attribute]);*/
+
+    const renderCellContent = (item, key) => {
+        const mapEntry = parameters.columnAttributeMap[key];
+        return (!!mapEntry.type) ? item[key][mapEntry.attribute] : item[mapEntry];
+    }
+
+    const rerenderComponent = () => {
+        setRerender(!rerender);
     }
 
 
-
-
-
+    const handleDeleteButtonClick = (item) => {
+        setCurrentItem(item);
+        setDeleteDialogShown(true);
+    }
 
 
     return (
@@ -76,11 +88,25 @@ export default function ContentTable({currentIndex, index, parameters}) {
                     {items.map(item =>
                         <TableRow key={item.id}>
                             {Object.keys(parameters.columnAttributeMap).map((key, index) => (
+                                <TableCell key={index}>{renderCellContent(item, key)}</TableCell>
                             ))}
+                            <TableCell>
+                                <Tooltip title={"Delete record"}>
+                                    <IconButton onClick={() => handleDeleteButtonClick(item)}>
+                                        <Delete></Delete>
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title={"Edit record"}>
+                                    <IconButton>
+                                        <Edit></Edit>
+                                    </IconButton>
+                                </Tooltip>
+                            </TableCell>
                         </TableRow>
                     )}
                 </TableBody>
             </Table>
+            <DeleteDialog shown={deleteDialogShown} setShownParent={setDeleteDialogShown} itemId={currentItem.id} rerenderParentMethod={rerenderComponent} deleteMethod={parameters.deleteMethod}></DeleteDialog>
 
         </TableContainer>
     )

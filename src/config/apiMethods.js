@@ -68,3 +68,23 @@ export const getCards = async() => {
     return await requests.makeRequest(requests.apiRoutes.cards, 'GET');
 }
 
+const buildRelationQueryString = (relations)  => {
+    let relationQueryString = '?';
+    for(const relation of relations) {
+        relationQueryString += 'relations[]=' + relation + '&';
+
+    }
+    return relationQueryString;
+}
+
+export const getCardsWithRelations = async(relations) => {
+
+    const relationQueryString = buildRelationQueryString(relations);
+
+    return await requests.makeRequest(requests.apiRoutes.cardsWithRelations, 'GET', undefined, relationQueryString);
+}
+
+export const getCollectionsWithRelations = async(relations) => {
+    const relationQueryString = buildRelationQueryString(relations);
+    return await requests.makeRequest(requests.apiRoutes.collectionsWithRelations, 'GET', undefined, relationQueryString);
+}

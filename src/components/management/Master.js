@@ -1,7 +1,9 @@
 import {
-    deleteProfileByCriteria, getCards,
-    getCollectionsByCriteria, getProfiles,
-    getProfilesByCriteria, getStatusByCriteria,
+    deleteCardByCriteria,
+    deleteCollectionByCriteria,
+    deleteProfileByCriteria, getCards, getCardsWithRelations,
+    getCollectionsByCriteria, getCollectionsWithRelations, getProfiles,
+    getProfilesByCriteria, getStatusByCriteria, updateCard, updateCollection,
     updateProfile
 } from "../../config/apiMethods";
 import {Box, Tab, Tabs} from "@mui/material";
@@ -28,17 +30,14 @@ const parameters = [
             'name': 'name',
             'exp': 'exp',
             'profile': {
-                type: 'handled',
-                handlerParameter: 'profile_id'
+                type: 'relation',
+                attribute: 'name'
             }
         },
-        getItemsMethod: getProfiles,
-        deleteMethod: deleteProfileByCriteria,
-        updateMethod: updateProfile,
+        getItemsMethod: getCollectionsWithRelations,
+        deleteMethod: deleteCollectionByCriteria,
+        updateMethod: updateCollection,
 
-        handlers: {
-            'profile': async (profileId) => (await getProfilesByCriteria(`?id=${profileId}`)).name
-        }
     },
     {
         name: "Cards",
@@ -46,22 +45,19 @@ const parameters = [
             'question': 'question',
             'answer': 'correct_answer',
             'collection': {
-                type: 'handled',
-                handlerParameter: 'collection_id'
+                type: 'relation',
+                attribute: 'name',
             },
             'status': {
-                type: 'handled',
-                handlerParameter: 'status_id'
+                type: 'relation',
+                attribute: 'name',
             },
             'repetition date': 'repeat_date'
         },
-        getItemsMethod: getCards,
-        deleteMethod: deleteProfileByCriteria,
-        updateMethod: updateProfile,
-        handlers: {
-            'collection': async (collectionId) => (await getCollectionsByCriteria(`?id=${collectionId}`)).name,
-            'status': async (statusId) => (await getStatusByCriteria(`?id=${statusId}`)).name
-        }
+        getItemsMethod: getCardsWithRelations,
+        deleteMethod: deleteCardByCriteria,
+        updateMethod: updateCard,
+
     }
 
 ]
@@ -84,6 +80,7 @@ export default function Master() {
 
             {parameters.map((tab, index) => (
                 <ContentTable
+                    key={index}
                     index={index}
                     currentIndex={currentTab}
                     parameters={parameters[index]}

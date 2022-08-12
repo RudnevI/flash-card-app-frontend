@@ -112,11 +112,10 @@ export default function ProfileList() {
 
                     </div>
                       ))}
-                <div className="ListItem" style={{justifyContent: "center", backgroundColor: "#b8bfba"}}>
-                    <IconButton aria-label="add new profile" component="label"
-                                onClick={() => setOpen(true)}>
+                <div className="ListItem AddItem" style={{justifyContent: "center"}} onClick={() => setOpen(true)}>
+
                         <AddCircleIcon></AddCircleIcon>
-                    </IconButton>
+
                 </div>
             </Stack>
 

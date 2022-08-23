@@ -3,11 +3,12 @@ import {createSlice} from "@reduxjs/toolkit";
 const lessonModeSlice = createSlice({
     name: "lessonMode",
     initialState: {
-        lessonMode: false
+        lessonMode: localStorage.getItem("lessonModeOn") || false
     },
     reducers: {
         toggle: function (state) {
             state.lessonMode = !state.lessonMode;
+            localStorage.setItem("lessonModeOn", state.lessonMode);
         }
     }
 })
